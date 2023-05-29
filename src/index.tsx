@@ -5,17 +5,35 @@ import { store } from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Counter } from "./features/counter/Counter";
+import { ErrorPage } from "./ErrorPage";
+import { Login } from "./Login";
+import { Register } from "./Register";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
+const router=createBrowserRouter([
+  {
+    path:"/",
+    element:<App/>,
+    errorElement:<ErrorPage/>,
+  },
+  {
+    path:"login",
+    element:<Login/>
+  },
+  {
+    path:"register",
+    element:<Register/>
+  }
+  ])
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
+      <Provider store={store}>
+        <RouterProvider router={router} />
     </Provider>
-  </React.StrictMode>
-);
+  );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
