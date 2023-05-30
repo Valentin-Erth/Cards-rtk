@@ -9,14 +9,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Counter } from "./features/counter/Counter";
 import { ErrorPage } from "./ErrorPage";
 import { Login } from "./features/auth/Login";
-import { Register } from "./features/auth/Register";
+import { Register } from "./features/auth/Register/Register";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 const router=createBrowserRouter([
   {
     path:"/",
-    element:<App/>,
+    element:<div>Hello RTK </div>,
     errorElement:<ErrorPage/>,
   },
   {
@@ -35,7 +35,8 @@ const router=createBrowserRouter([
 
 root.render(
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router}/>
+        <App/>
     </Provider>
   );
 

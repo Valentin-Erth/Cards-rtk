@@ -1,16 +1,12 @@
 import { instance } from "../../common/api/common.api";
 
-type ResponseType={
-  addedUser: {} // чтобы посмотреть как выглядит созданный юзер
-  error?: string
-}
-type payloadRegisterType={
+export type ArgRegisterType={
   email: string
-  password:string
+  password: string
+}
 
-}
-export const authApi={
-  register:(payload:payloadRegisterType)=>{
-    instance.post('/auth/register',payload)
-  },
-}
+export const authApi = {
+  register: (arg:ArgRegisterType) => {
+   return instance.post("auth/register", arg);
+  }
+};
