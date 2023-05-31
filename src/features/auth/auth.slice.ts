@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ArgRegisterType, authApi } from "./auth.api";
+import { ArgLoginType, ArgRegisterType, authApi } from "./auth.api";
 
 const register = createAsyncThunk(
   // 1 - prefix
@@ -12,10 +12,18 @@ const register = createAsyncThunk(
   (arg:ArgRegisterType, thunkAPI) => {
     // const {dispatch,getState,rejectWithValue}=thunkAPI
     authApi.register(arg).then((res) => {
-      debugger;
+      // debugger;
+      console.log("register",res.data)
+      // res.data.addedUser.
     });
   }
 );
+const login=createAsyncThunk("auth/login",(arg:ArgLoginType, thunkAPI)=>{
+  authApi.login(arg).then(res=>{
+    console.log(res.data);
+    // debugger
+  })
+})
 const slice = createSlice({
   name: "auth",
   initialState: {},
@@ -23,4 +31,4 @@ const slice = createSlice({
 });
 
 export const authReducer = slice.reducer;
-export const authThunks = { register };
+export const authThunks = { register,login };

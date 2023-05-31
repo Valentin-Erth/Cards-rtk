@@ -7,7 +7,7 @@ export const Register = () => {
   const dispatch = useAppDispatch();
   const registerHandler = () => {
     const payload = {
-      email: "nya-admin@nya.nya",
+      email: "kozlov0020@gmail.com",
       password: "1qazxcvBG"
     };
     dispatch(authThunks.register(payload));

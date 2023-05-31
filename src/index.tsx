@@ -8,7 +8,7 @@ import './index.css';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Counter } from "./features/counter/Counter";
 import { ErrorPage } from "./ErrorPage";
-import { Login } from "./features/auth/Login";
+import { Login } from "./features/auth/Login/Login";
 import { Register } from "./features/auth/Register/Register";
 
 const container = document.getElementById('root')!;
