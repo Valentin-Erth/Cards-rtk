@@ -9,10 +9,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type FormInputType = {
@@ -22,6 +20,7 @@ type FormInputType = {
 }
 export const Register = () => {
   const dispatch = useAppDispatch();
+    const navigate = useNavigate();
   const registerHandler = () => {
     const payload = {
       email: "kozlov0020@gmail.com",
@@ -37,13 +36,21 @@ export const Register = () => {
     },
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const onSubmit: SubmitHandler<FormInputType> = data => {
     console.log(data);
-    // dispatch(authThunks.register(data));
+    dispatch(authThunks.register(data));
+    setIsRegistered(true);
+  };
+  const handleLogin = () => {
+    navigate("/login");
   };
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
+  if(isRegistered){
+    navigate("/login");
+  }
   return (
     <div className={s.container}>
       <div className={s.header}>Sign up</div>

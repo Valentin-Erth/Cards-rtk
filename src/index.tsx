@@ -5,38 +5,13 @@ import { store } from './app/store';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Counter } from "./features/counter/Counter";
-import { ErrorPage } from "./ErrorPage";
-import { Login } from "./features/auth/Login/Login";
-import { Register } from "./features/auth/Register/Register";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
-const router=createBrowserRouter([
-  {
-    path:"/",
-    element:<div>Hello RTK </div>,
-    errorElement:<ErrorPage/>,
-  },
-  {
-    path:"/login",
-    element:<Login/>
-  },
-  {
-    path:"/register",
-    element:<Register/>
-  },
-  {
-    path:"/packs",
-    element:<h1>Packs</h1>
-  },
-  ])
 
 root.render(
       <Provider store={store}>
-        <RouterProvider router={router}/>
-        <App/>
+       <App/>
     </Provider>
   );
 

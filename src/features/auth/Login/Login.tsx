@@ -38,7 +38,7 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const onSubmit: SubmitHandler<FormInputType> = data => {
     console.log(data);
-    // dispatch(authThunks.login(data));
+    dispatch(authThunks.login(data));
   };
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
