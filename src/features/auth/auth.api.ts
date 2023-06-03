@@ -1,4 +1,5 @@
 import { instance } from "../../common/api/common.api";
+import axios from "axios";
 
 export const authApi = {
   register: (arg: ArgRegisterType) => {
@@ -11,15 +12,14 @@ export const authApi = {
     return instance.post<MeResType>('auth/me')
   },
   logout: () => {
-    return instance.delete('auth/me')
+    return instance.delete<LoginOutRes>('auth/me')
   },
   editMe: (args: EditMeArgs) => {
     return instance.put('auth/me', args)
   },
   forgotPassword: (args: ForgotArgs) => {
-    return instance
-      // TODO
-      .post('auth/forgot', args)
+    debugger
+    return axios.post<ForgotRes>('https://neko-back.herokuapp.com/2.0/auth/forgot', args)
   },
   setNewPassword: (args: SetNewPasswordArgs) => {
     // TODO
@@ -46,11 +46,12 @@ export type SetNewPasswordArgs = {
   resetPasswordToken: string
 }
 type LoginOutRes={
-
+  info: string
+  error?: string
 }
-type ForgotArgs={
+export type ForgotArgs={
   email: string // кому восстанавливать пароль
-  from: string // от кого придёт письмо
+  from?: string // от кого придёт письмо
   message: string // письмо, вместо $token$ бэк вставит токен. Пример:
   // <div style="background-color: indianred; padding: 15px">
   //     password recovery link:
@@ -58,6 +59,10 @@ type ForgotArgs={
   //     link
   //   </a>
   // </div>
+}
+type ForgotRes = {
+  info: string
+  error?: string
 }
 type EditMeArgs={
   name?: string

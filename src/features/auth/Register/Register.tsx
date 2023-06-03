@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAppDispatch } from "../../../app/hooks";
 import { authThunks } from "../auth.slice";
-import s from './register.module.css'
+import s from "./register.module.css";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
@@ -16,11 +16,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 type FormInputType = {
   email: string
   password: string
-  confirmPassword:string
+  confirmPassword: string
 }
 export const Register = () => {
   const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const registerHandler = () => {
     const payload = {
       email: "kozlov0020@gmail.com",
@@ -28,19 +28,21 @@ export const Register = () => {
     };
     dispatch(authThunks.register(payload));
   };
-  const { register, handleSubmit,watch, formState: { errors, isSubmitting, isValid} } = useForm<FormInputType>({
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting, isValid } } = useForm<FormInputType>({
     mode: "onChange",
     defaultValues: {
       password: "",
-      confirmPassword: "",
-    },
+      confirmPassword: ""
+    }
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [isRegistered, setIsRegistered] = useState(false);
+  // const [isRegistered, setIsRegistered] = useState(false);
   const onSubmit: SubmitHandler<FormInputType> = data => {
     console.log(data);
-    dispatch(authThunks.register(data));
-    setIsRegistered(true);
+    dispatch(authThunks.register(data))
+      .unwrap()
+      .then(() => navigate("/login"));
+
   };
   const handleLogin = () => {
     navigate("/login");
@@ -48,9 +50,7 @@ export const Register = () => {
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
-  if(isRegistered){
-    navigate("/login");
-  }
+
   return (
     <div className={s.container}>
       <div className={s.header}>Sign up</div>
@@ -84,9 +84,9 @@ export const Register = () => {
             <TextField type={showPassword ? "text" : "password"} label="Confirm Password" margin="normal"
                        variant={"standard"} {...register("confirmPassword", {
               validate: (value) =>
-                value === watch("password") || "Passwords do not match",
+                value === watch("password") || "Passwords do not match"
             })}
-            error={Boolean(errors.confirmPassword)} helperText={errors.confirmPassword?.message}
+                       error={Boolean(errors.confirmPassword)} helperText={errors.confirmPassword?.message}
                        InputProps={{
                          endAdornment: (
                            <InputAdornment position="end">

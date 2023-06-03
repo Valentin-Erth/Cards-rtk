@@ -1,9 +1,13 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { ErrorPage } from "../ErrorPage";
+import { ErrorPage } from "./ErrorPage";
 import { Login } from "../features/auth/Login/Login";
 import { Register } from "../features/auth/Register/Register";
 import React from "react";
 import { Packs } from "../features/packs/Packs";
+import { Profile } from "../features/auth/Profile/Profile";
+import { FogotPassword } from "../features/auth/ResetPassword/FogotPassword";
+import { CheckEmail } from "../features/auth/ResetPassword/CheckEmail";
+import { SetPassword } from "../features/auth/ResetPassword/SetPassword";
 
 export const routes=createBrowserRouter([
   {
@@ -29,20 +33,20 @@ export const routes=createBrowserRouter([
   },
   {
     path:"/forgot-password",
-    element:<h1>FogotPassword</h1>
+    element:<FogotPassword/>
   },
   {
     path:"/check-email",
-    element:<h1>CheckEmail</h1>
+    element:<CheckEmail/>
   },
   {
-    path:"/set-new-password/:token",
-    element:<h1>SetNewPassword</h1>
+    path:"/set-password",
+    element:<SetPassword/>
   },
   //require auth
   {
     path:"/profile",
-    element:<h1>Profile</h1>
+    element:<Profile/>
   },
   {
     path:"/packs",

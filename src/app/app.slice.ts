@@ -16,11 +16,11 @@ export const slice = createSlice({
     // Action - это payload объект. Типизация через PayloadAction
     setIsLoading: (state, action: PayloadAction<{ isLoading: boolean }>) => {
       //увидеть состояние state текущее
-      console.log(current(state));
+      // console.log(current(state));
       // Логику в подредьюсерах пишем мутабельным образом,
       // т.к. иммутабельность достигается благодаря immer.js
       state.isLoading = action.payload.isLoading;
-      console.log(current(state));
+      // console.log(current(state));
     }
   }
 });

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ArgLoginType, ArgRegisterType, authApi, MeResType, ProfileType } from "./auth.api";
-import { createAppAsyncThunk } from "../../common/utils/createAppAsyncThunk";
+import { ArgLoginType, ArgRegisterType, authApi, ForgotArgs, MeResType, ProfileType } from "./auth.api";
+import { createAppAsyncThunk, globalRouter } from "../../common/utils/createAppAsyncThunk";
+
 
 const register = createAppAsyncThunk<void, ArgRegisterType>("auth/register", async (arg) => {
   const res = await authApi.register(arg);
@@ -10,12 +11,30 @@ const login = createAppAsyncThunk<{ profile: ProfileType }, ArgLoginType>
   const res = await authApi.login(arg);
   return { profile: res.data };
 });
-const getMe = createAppAsyncThunk<{ user: MeResType}>("auth/getMe", async (arg, thunkAPI) => {
-    const res = await authApi.getMe()
-    debugger;
-    return { user: res.data };
+const logout = createAppAsyncThunk("auth/logout", async (arg, thunkAPI) => {
+  const res = await authApi.logout();
+});
+
+const getMe = createAppAsyncThunk<{ user: MeResType }>("auth/getMe", async (arg, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+      const res = await authApi.getMe();
+      // debugger
+      return { user: res.data };
+    } catch (error: any) {
+      console.log(error);
+      // if (e.response.status===401 && globalRouter.navigate){
+      //   globalRouter.navigate('/login')
+      // }
+      return rejectWithValue(null);
+    }
+
   }
 );
+const sendResetPassword = createAppAsyncThunk("auth/resetPassword", async (arg:ForgotArgs)=> {
+  debugger
+  return await authApi.forgotPassword({ email:arg.email,from:arg.from,message:arg.message });
+});
 
 const _register = createAsyncThunk("auth/register",// 2 - callback (условно наша старая санка), в которую:
   // - первым параметром (arg) мы передаем аргументы необходимые для санки
@@ -42,7 +61,8 @@ const slice = createSlice({
     isAuth: false,
     isLoading: true,
     error: null as null | string,
-    profile: null as ProfileType | null
+    profile: null as ProfileType | null,
+    email: ""
   },
   reducers: {},
   extraReducers: builder => {
@@ -61,15 +81,22 @@ const slice = createSlice({
       .addCase(getMe.fulfilled, (state, action) => {
         if (action.payload) {
           state.user = action.payload.user;
-          state.isAuth=!!state.user
+          console.log(state.user.email);
+          state.isAuth = !!state.user;
         }
         state.isLoading = false;
       })
-  .addCase(getMe.pending, (state) => {
-      state.isLoading = true
-    })
+      .addCase(getMe.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sendResetPassword.fulfilled, (state, action) => {
+        debugger
+        console.log(action);
+        state.email=action.meta.arg.email
+
+      });
   }
 });
 
 export const authReducer = slice.reducer;
-export const authThunks = { register, login,getMe };
+export const authThunks = { register, login, getMe, logout, sendResetPassword };

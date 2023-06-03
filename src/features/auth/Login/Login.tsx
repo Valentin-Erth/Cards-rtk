@@ -1,9 +1,7 @@
-import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
@@ -11,8 +9,7 @@ import { useAppDispatch } from "../../../app/hooks";
 import { authThunks } from "../auth.slice";
 import s from "./login.module.css";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
-// import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { NavLink, useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -26,6 +23,7 @@ type FormInputType = {
 }
 export const Login = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const loginHandler = () => {
     const payload = {
       email: "kozlov0020@gmail.com",
@@ -38,7 +36,9 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const onSubmit: SubmitHandler<FormInputType> = data => {
     console.log(data);
-    dispatch(authThunks.login(data));
+    dispatch(authThunks.login(data))
+      .unwrap()
+      .then(()=>navigate('/profile'));
   };
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
@@ -85,7 +85,7 @@ export const Login = () => {
         </FormControl>
       </form>
       <div className={"s.forgot"}>
-        <NavLink className={s.fogotLink} to="/reset-password">Forgot password?</NavLink>
+        <NavLink className={s.fogotLink} to="/forgot-password">Forgot password?</NavLink>
       </div>
       <div className={s.question}>Don't have an account?</div>
       <div>
