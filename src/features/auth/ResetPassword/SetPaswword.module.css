@@ -13,6 +13,12 @@
     width: 413px;
     height: 456px;
 }
+.newcon{
+    height: 372px;
+}
+.containerMail{
+    height: 408px;
+}
 
 .header {
     display: flex;
@@ -47,4 +53,8 @@
     text-align: center;
     color: #000000;
     opacity: 0.5;
+}
+.ButtonLink{
+    text-decoration: none;
+    color: white;
 }

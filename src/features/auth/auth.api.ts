@@ -15,18 +15,20 @@ export const authApi = {
     return instance.delete<LoginOutRes>('auth/me')
   },
   editMe: (args: EditMeArgs) => {
-    return instance.put('auth/me', args)
+    return instance.put<EditMeRes>('auth/me', args)
   },
   forgotPassword: (args: ForgotArgs) => {
-    debugger
-    return axios.post<ForgotRes>('https://neko-back.herokuapp.com/2.0/auth/forgot', args)
+    return instance.post<ForgotRes>('auth/forgot', args)
   },
   setNewPassword: (args: SetNewPasswordArgs) => {
-    // TODO
-    return instance.post('auth/set-new-password', args)
+   return instance.post<ForgotRes>('auth/set-new-password', args)
   },
 }
 //Types
+export type EditMeRes = {
+  updatedUser: MeResType
+  error?: string
+}
 export type MeResType={
   _id: string;
   email: string;
@@ -43,7 +45,7 @@ export type MeResType={
 }
 export type SetNewPasswordArgs = {
   password: string
-  resetPasswordToken: string
+  resetPasswordToken: string|undefined
 }
 type LoginOutRes={
   info: string
@@ -64,7 +66,7 @@ type ForgotRes = {
   info: string
   error?: string
 }
-type EditMeArgs={
+export type EditMeArgs={
   name?: string
   avatar?: string
 }
@@ -86,7 +88,6 @@ export type ProfileType = {
   token: string;
   tokenDeathTime: number;
 }
-
 export type ArgRegisterType = Omit<ArgLoginType, "rememberMe">
 export type ArgLoginType = {
   email: string;
