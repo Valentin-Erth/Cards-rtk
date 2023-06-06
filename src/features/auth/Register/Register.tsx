@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { authThunks } from "../auth.slice";
 import s from "./register.module.css";
 import FormControl from "@mui/material/FormControl";
@@ -28,6 +28,7 @@ export const Register = () => {
     };
     dispatch(authThunks.register(payload));
   };
+  const error = useAppSelector(state => state.app.error);
   const { register, handleSubmit, watch, formState: { errors, isSubmitting, isValid } } = useForm<FormInputType>({
     mode: "onChange",
     defaultValues: {
@@ -53,6 +54,7 @@ export const Register = () => {
 
   return (
     <div className={s.container}>
+      {!!error && <h2>{error}</h2>}
       <div className={s.header}>Sign up</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>

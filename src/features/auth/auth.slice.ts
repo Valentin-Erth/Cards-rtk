@@ -11,8 +11,15 @@ import {
 import { createAppAsyncThunk, globalRouter } from "../../common/utils/createAppAsyncThunk";
 
 
-const register = createAppAsyncThunk<void, ArgRegisterType>("auth/register", async (arg) => {
-  const res = await authApi.register(arg);
+const register = createAppAsyncThunk<void, ArgRegisterType>("auth/register", async (arg, thunkAPI) => {
+  const {rejectWithValue}=thunkAPI
+  try {
+    const res = await authApi.register(arg);
+  } catch (e) {
+    // console.error(e);
+    return rejectWithValue(e)
+  }
+
 });
 const login = createAppAsyncThunk<{ profile: ProfileType }, ArgLoginType>
 ("auth/login", async (arg, thunkAPI) => {
@@ -84,15 +91,15 @@ const slice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(login.fulfilled, (state, action) => {
         state.profile = action.payload.profile;
         state.isAuth = true;
         state.isLoading = false;
       })
-      .addCase(login.pending, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(login.rejected, (state) => {
+     .addCase(login.rejected, (state) => {
         state.isLoading = false;
       })
       .addCase(getMe.fulfilled, (state, action) => {

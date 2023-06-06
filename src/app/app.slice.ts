@@ -1,5 +1,7 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-import { log } from "util";
+import { authThunks } from "../features/auth/auth.slice";
+import { isAxiosError } from "axios";
+import { toast } from "react-toastify";
 
 const appinitialState = {
   error: null as string | null,
@@ -22,6 +24,19 @@ export const slice = createSlice({
       state.isLoading = action.payload.isLoading;
       // console.log(current(state));
     }
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(authThunks.register.rejected,(state, action)=>{
+        if(!isAxiosError(action.payload)){
+          state.error="an error has occurred"
+          toast.error("an error has occurred")
+          return
+          }
+        state.error=action.payload?.response?.data?.error
+        toast.error(action.payload?.response?.data?.error)
+        state.isLoading=false
+      })
   }
 });
 export const appReducer = slice.reducer;

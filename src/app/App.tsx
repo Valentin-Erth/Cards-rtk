@@ -5,6 +5,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { RouterProvider, useNavigate } from "react-router-dom";
 import { routes } from "../routes/routes";
 import { authThunks } from "../features/auth/auth.slice";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const isLoading = useAppSelector((state) => state.app.isLoading);
@@ -14,6 +16,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       dispatch(appActions.setIsLoading({ isLoading: false }));
+      toast("Loaded successfully")
     }, 1000);
   }, []);
   useEffect(() => {
@@ -35,6 +38,15 @@ function App() {
         size={100} /></div>
       :<RouterProvider router={routes} />
       }
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }
