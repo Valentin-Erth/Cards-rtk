@@ -36,6 +36,10 @@ export const routes = createBrowserRouter([
   //   ]
   // },
   {
+    path:"/",
+    element:<Navigate to={"/login"}/>
+  },
+  {
     path:"/404",
     element: <h1>404: PAGE NOT FOUND</h1>
   },
