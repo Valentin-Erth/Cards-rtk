@@ -11,7 +11,7 @@ export const thunkTryCatch = async (thunkAPI: BaseThunkAPI<RootState, any, AppDi
   try {
     return await promise();
   } catch (e) {
-     return rejectWithValue(e);
+     return rejectWithValue({ error:e, showGlobalError });
   }
   // } finally {
   //   dispatch(appActions.setIsLoading({isLoading: false }))

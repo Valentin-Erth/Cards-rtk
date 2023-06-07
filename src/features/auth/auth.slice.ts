@@ -35,7 +35,7 @@ const getMe = createAppAsyncThunk<{ user: MeResType }>("auth/getMe", async (arg,
   return thunkTryCatch(thunkAPI, async () => {
     const res = await authApi.getMe();
     return { user: res.data };
-  });
+  },false);
 });
 const sendResetPassword = createAppAsyncThunk("auth/resetPassword", async (arg: ForgotArgs, thunkAPI) => {
   return thunkTryCatch(thunkAPI, async () => {

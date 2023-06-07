@@ -49,14 +49,16 @@ export const slice = createSlice({
       }
       ,(state, action) => {
         console.log(action);
-        const e=action.payload
+        const { error,showGlobalError=true }=action.payload
         state.isLoading=false
+          if(!showGlobalError) return
+
           let errorMessage = ""
-          if (isAxiosError(e)) {
-            errorMessage = e?.response?.data?.error ?? e.message
-          } else if (e instanceof Error) {
-            errorMessage = `Native error: ${e.message}`
-          } else errorMessage = JSON.stringify(e)
+          if (isAxiosError(error)) {
+            errorMessage = error?.response?.data?.error ?? error.message
+          } else if (error instanceof Error) {
+            errorMessage = `Native error: ${error.message}`
+          } else errorMessage = JSON.stringify(error)
           toast.error(errorMessage)
       })
 
