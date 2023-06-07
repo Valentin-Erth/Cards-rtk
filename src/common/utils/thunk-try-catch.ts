@@ -2,20 +2,20 @@ import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { AppDispatch, RootState } from "../../app/store";
 import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
+import { appActions } from "../../app/app.slice";
 
 //функц для обработки ошибок во всех санках
-export const thunkTryCatch = async (thunkAPI: BaseThunkAPI<RootState, any, AppDispatch, unknown>, promise: Function) => {
-  const {rejectWithValue } = thunkAPI;
+export const thunkTryCatch = async (thunkAPI: BaseThunkAPI<RootState, any, AppDispatch, unknown>, promise: Function, showGlobalError?:boolean) => {
+  const {rejectWithValue,dispatch} = thunkAPI;
+  // dispatch(appActions.setIsLoading({isLoading: true }))
   try {
     return await promise();
   } catch (e) {
-    let errorMessage=""
-    if (isAxiosError(e)){
-      errorMessage=e?.response?.data?.error
-    } else if (e instanceof Error){
-      errorMessage=`Native error: ${e.message}`
-    } else errorMessage=JSON.stringify(e)
-    toast.error(errorMessage)
-    return rejectWithValue(errorMessage);
+     return rejectWithValue(e);
   }
+  // } finally {
+  //   dispatch(appActions.setIsLoading({isLoading: false }))
+  // }
 };
+const error=0?? "haha"// 0
+const error2=0 || "haha"// "haha"

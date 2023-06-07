@@ -29,6 +29,38 @@ export const slice = createSlice({
       state.isAppInitialized=action.payload.isAppInitialized
     }
   },
+  extraReducers:builder =>
+    builder.addMatcher((action)=> {
+      return action.type.endsWith("/pending")
+      }
+      ,(state, action) => {
+        console.log(action);
+      state.isLoading=true
+    })
+      .addMatcher((action)=> {
+        return action.type.endsWith("/fulfilled")
+      }
+      ,(state, action) => {
+        console.log(action);
+        state.isLoading=false
+      })
+      .addMatcher((action)=> {
+        return action.type.endsWith("/rejected")
+      }
+      ,(state, action) => {
+        console.log(action);
+        const e=action.payload
+        state.isLoading=false
+          let errorMessage = ""
+          if (isAxiosError(e)) {
+            errorMessage = e?.response?.data?.error ?? e.message
+          } else if (e instanceof Error) {
+            errorMessage = `Native error: ${e.message}`
+          } else errorMessage = JSON.stringify(e)
+          toast.error(errorMessage)
+      })
+
+
   });
 export const appReducer = slice.reducer;
 export const appActions = slice.actions;

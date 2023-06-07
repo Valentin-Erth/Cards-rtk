@@ -12,6 +12,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import { NavLink, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type FormInputType = {
   email: string
@@ -42,8 +43,10 @@ export const Register = () => {
     console.log(data);
     dispatch(authThunks.register(data))
       .unwrap()
-      .then(() => navigate("/login"));
-
+      .then(() => {
+        navigate("/login");
+        toast.success("Successful registration")
+      })
   };
   const handleLogin = () => {
     navigate("/login");

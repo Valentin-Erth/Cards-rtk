@@ -32,7 +32,7 @@ export type EditMeRes = {
 export type MeResType={
   _id: string;
   email: string;
-  name: string;
+  name: string|undefined;
   avatar?: string;
   publicCardPacksCount: number; // количество колод
   created: string;

@@ -1,45 +1,46 @@
 import { useAppDispatch, useAppSelector } from "./hooks";
-import React, { useEffect } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 import { appActions } from "./app.slice";
 import CircularProgress from "@mui/material/CircularProgress";
-import { RouterProvider, useNavigate } from "react-router-dom";
+import { Outlet, RouterProvider, useNavigate } from "react-router-dom";
 import { routes } from "../routes/routes";
 import { authThunks } from "../features/auth/auth.slice";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import { Loader } from "../features/loader/loader";
+import { Header } from "../Header/Header";
 
-function App() {
+export const App = () => {
   const isLoading = useAppSelector((state) => state.app.isLoading);
-  const user=useAppSelector(state => state.auth.user)
+  const user = useAppSelector(state => state.auth.user);
   const dispatch = useAppDispatch();
   // const navigate = useNavigate();
   useEffect(() => {
     setTimeout(() => {
       dispatch(appActions.setIsLoading({ isLoading: false }));
-      toast("Loaded successfully")
+      toast("Loaded successfully");
     }, 1000);
   }, []);
   useEffect(() => {
-    if (!user){
+    if (!user) {
       // debugger
-      dispatch(authThunks.getMe())
-        // .unwrap()
-        // .catch((error)=> {
-        //   if (error.response.status===401) {
-        //     console.log(error);
-        //     navigate('/login')
-        //   };
-        // })
+      dispatch(authThunks.getMe());
+      // .unwrap()
+      // .catch((error)=> {
+      //   if (error.response.status===401) {
+      //     console.log(error);
+      //     navigate('/login')
+      //   };
+      // })
     }
-  }, [])
+  }, []);
   return (
     <div>
-      {isLoading? <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}><CircularProgress
-        size={100} /></div>
-      :<RouterProvider router={routes} />
-      }
+      {isLoading ?
+        <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}><Loader /></div>
+        : <RouterProvider router={routes} />}
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={5000}
         closeOnClick
         pauseOnFocusLoss
@@ -49,6 +50,17 @@ function App() {
       />
     </div>
   );
-}
-
-export default App;
+};
+//<CircularProgress size={100} />
+export const Layout = () => {
+  const isLoading = useAppSelector((state) => state.app.isLoading);
+  return (
+    <div>
+      <Header />
+      {isLoading ?
+        <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}><Loader /></div>
+        : <Outlet />}
+      {/*<div><h1>Footer</h1></div>*/}
+    </div>
+  );
+};

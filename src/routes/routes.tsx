@@ -8,6 +8,7 @@ import { Profile } from "../features/auth/Profile/Profile";
 import { FogotPassword } from "../features/auth/ResetPassword/FogotPassword";
 import { CheckEmail } from "../features/auth/ResetPassword/CheckEmail";
 import { SetPassword } from "../features/auth/ResetPassword/SetPassword";
+import { Layout } from "../app/App";
 
 
 // const Layout = () => {

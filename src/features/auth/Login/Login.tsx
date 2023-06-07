@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import { Loader } from "../../loader/loader";
 
 
 type FormInputType = {
@@ -45,6 +46,7 @@ export const Login = () => {
   };
   return (
     <div className={s.container}>
+
       <div className={s.header}>Sign in</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>

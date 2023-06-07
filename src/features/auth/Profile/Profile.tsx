@@ -7,16 +7,17 @@ import { useAppSelector } from "../../../common/utils/createAppAsyncThunk";
 import { authThunks } from "../auth.slice";
 import ava from "../../../images/8_102.jpg";
 import TextField from "@mui/material/TextField";
-import pen from '../../../images/Pen.svg'
+import pen from "../../../images/Pen.svg";
 
 
 export const Profile = () => {
-  const dispatch = useAppDispatch()
-  const nameUser=useAppSelector(state => state.auth.user?.name)
+  const dispatch = useAppDispatch();
+  const nameUser = useAppSelector(state => state.auth.user?.name);
+  console.log(nameUser);
   const emailUser = useAppSelector(state => state.auth.user?.email);
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [localTitle, setlocalTitle] = useState<string|undefined>(nameUser);
-
+  const [localTitle, setlocalTitle] = useState<string | undefined>(nameUser);
+  console.log(localTitle);
   const LogoutHandler = () => {
     dispatch(authThunks.logout());
   };
@@ -30,23 +31,24 @@ export const Profile = () => {
     // setEditMode(false);
     // changeTitle(localTitle)
   };
-  const handleSave=()=>{
-    dispatch(authThunks.editMe({name:localTitle}))
+  const handleSave = () => {
+    dispatch(authThunks.editMe({ name: localTitle }));
     // console.log(`Save ${localTitle}`);
     setEditMode(false);
-     }
+  };
   return (
     <div className={s.container}>
       <div className={s.header}>Personal Information</div>
       <div><img src={ava} className={s.fotoUser} /></div>
       {editMode ?
-        <TextField value={localTitle} onChange={changeLocalTitle} autoFocus={true} onBlur={offEditMode} label="Nickname"
-                   margin="normal" type={"email"} variant={"standard"} style={{ width: "347px" }}  InputProps={{
+        <TextField value={localTitle} onChange={changeLocalTitle} autoFocus={true} onBlur={offEditMode}
+                   margin="normal" type={"email"} variant={"standard"} style={{ width: "347px" }} InputProps={{
           endAdornment: (
             <Button variant="contained" onClick={handleSave} size={"small"}>
               Save
-            </Button>)}}/>
-        : <span className={s.name} onDoubleClick={onEditMode}>{localTitle} <img src={pen}/></span>}
+            </Button>)
+        }} />
+        : <span className={s.name} onDoubleClick={onEditMode}>{nameUser} <img src={pen} /></span>}
       <div className={s.titleLogin}>{emailUser ? emailUser : <span>not authorized</span>}</div>
       <Button variant="outlined" color={"inherit"} startIcon={<LogoutIcon />} onClick={LogoutHandler} style={{
         border: "none",
