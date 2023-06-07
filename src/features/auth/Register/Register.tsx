@@ -54,7 +54,7 @@ export const Register = () => {
 
   return (
     <div className={s.container}>
-      {!!error && <h2>{error}</h2>}
+      {/*{!!error && <h2>{error}</h2>}*/}
       <div className={s.header}>Sign up</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>

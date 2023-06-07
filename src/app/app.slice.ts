@@ -23,21 +23,12 @@ export const slice = createSlice({
       // т.к. иммутабельность достигается благодаря immer.js
       state.isLoading = action.payload.isLoading;
       // console.log(current(state));
+    },
+    setAppInitialized:(state,
+                       action:PayloadAction<{isAppInitialized:boolean}>)=>{
+      state.isAppInitialized=action.payload.isAppInitialized
     }
   },
-  extraReducers: builder => {
-    builder
-      .addCase(authThunks.register.rejected,(state, action)=>{
-        if(!isAxiosError(action.payload)){
-          state.error="an error has occurred"
-          toast.error("an error has occurred")
-          return
-          }
-        state.error=action.payload?.response?.data?.error
-        toast.error(action.payload?.response?.data?.error)
-        state.isLoading=false
-      })
-  }
-});
+  });
 export const appReducer = slice.reducer;
 export const appActions = slice.actions;

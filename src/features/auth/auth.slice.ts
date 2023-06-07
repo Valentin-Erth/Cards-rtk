@@ -9,22 +9,23 @@ import {
   SetNewPasswordArgs
 } from "./auth.api";
 import { createAppAsyncThunk, globalRouter } from "../../common/utils/createAppAsyncThunk";
+import { thunkTryCatch } from "../../common/utils/thunk-try-catch";
 
 
-const register = createAppAsyncThunk<void, ArgRegisterType>("auth/register", async (arg, thunkAPI) => {
-  const {rejectWithValue}=thunkAPI
-  try {
+const register = createAppAsyncThunk<any, ArgRegisterType>("auth/register",  (arg, thunkAPI) => {
+  return thunkTryCatch(thunkAPI, async ()=>{// если не сработает запрос попадем в катч ошибки
     const res = await authApi.register(arg);
-  } catch (e) {
-    // console.error(e);
-    return rejectWithValue(e)
-  }
+    return res.data
+  })
+
 
 });
 const login = createAppAsyncThunk<{ profile: ProfileType }, ArgLoginType>
-("auth/login", async (arg, thunkAPI) => {
-  const res = await authApi.login(arg);
-  return { profile: res.data };
+("auth/login", (arg, thunkAPI) => {
+  return  thunkTryCatch(thunkAPI,()=>{
+    return authApi.login(arg).then((res)=>({
+      profile: res.data }))
+  })
 });
 const logout = createAppAsyncThunk("auth/logout", async (arg, thunkAPI) => {
   const res = await authApi.logout();
@@ -34,7 +35,6 @@ const getMe = createAppAsyncThunk<{ user: MeResType }>("auth/getMe", async (arg,
     const { rejectWithValue } = thunkAPI;
     try {
       const res = await authApi.getMe();
-      // debugger
       return { user: res.data };
     } catch (error: any) {
       // if (e.response.status===401 && globalRouter.navigate){
