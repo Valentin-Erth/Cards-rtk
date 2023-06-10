@@ -15,6 +15,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import { Loader } from "../../loader/loader";
+import { toast } from "react-toastify";
 
 
 type FormInputType = {
@@ -39,8 +40,11 @@ export const Login = () => {
     console.log(data);
     dispatch(authThunks.login(data))
       .unwrap()
-      .then(()=>navigate('/profile'));
-  };
+      .then((res)=>{
+        // console.log(res);
+        toast.success("You have successfully logged in")
+        navigate('/profile')})
+     };
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
   };

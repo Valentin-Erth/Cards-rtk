@@ -9,7 +9,7 @@ export const authApi = {
     return instance.post<ProfileType>("auth/login", arg);
   },
   getMe: () => {
-    return instance.post<MeResType>('auth/me')
+    return instance.post<ProfileType>('auth/me')
   },
   logout: () => {
     return instance.delete<LoginOutRes>('auth/me')
@@ -78,13 +78,12 @@ export type ProfileType = {
   email: string;
   rememberMe: boolean;
   isAdmin: boolean;
-  name: string;
+  name: string|undefined;
   verified: boolean;
   publicCardPacksCount: number;// количество колод
   created: string;
   updated: string;// подтвердил ли почту
   __v: number;
-
   token: string;
   tokenDeathTime: number;
 }

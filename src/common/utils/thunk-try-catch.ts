@@ -5,17 +5,19 @@ import { isAxiosError } from "axios";
 import { appActions } from "../../app/app.slice";
 
 //функц для обработки ошибок во всех санках
-export const thunkTryCatch = async (thunkAPI: BaseThunkAPI<RootState, any, AppDispatch, unknown>, promise: Function, showGlobalError?:boolean) => {
+export const thunkTryCatch = async<T> (thunkAPI: BaseThunkAPI<RootState, any, AppDispatch, unknown>,
+   promise: ()=>Promise<T>,
+   showGlobalError?:boolean
+):Promise<T | ReturnType<typeof thunkAPI.rejectWithValue>> => {
   const {rejectWithValue,dispatch} = thunkAPI;
-  // dispatch(appActions.setIsLoading({isLoading: true }))
-  try {
+    try {
     return await promise();
   } catch (e) {
-     return rejectWithValue({ error:e, showGlobalError });
+     return rejectWithValue({ error:e, showGlobalError });//showGlobalError параметр чтобы не показывать ошибку при неуспешном запросе
   }
-  // } finally {
-  //   dispatch(appActions.setIsLoading({isLoading: false }))
-  // }
-};
+ };
+
+
+
 const error=0?? "haha"// 0
 const error2=0 || "haha"// "haha"

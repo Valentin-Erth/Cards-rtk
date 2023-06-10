@@ -31,11 +31,12 @@ const logout = createAppAsyncThunk("auth/logout", async (arg, thunkAPI) => {
     const res = await authApi.logout();
   });
 });
-const getMe = createAppAsyncThunk<{ user: MeResType }>("auth/getMe", async (arg, thunkAPI) => {
+const getMe = createAppAsyncThunk("auth/getMe", async (arg, thunkAPI) => {
   return thunkTryCatch(thunkAPI, async () => {
     const res = await authApi.getMe();
+    console.log(res);
     return { user: res.data };
-  },false);
+  }, false);
 });
 const sendResetPassword = createAppAsyncThunk("auth/resetPassword", async (arg: ForgotArgs, thunkAPI) => {
   return thunkTryCatch(thunkAPI, async () => {
@@ -60,12 +61,12 @@ const editMe = createAppAsyncThunk("auth/editMe", async (arg: EditMeArgs, thunkA
 const slice = createSlice({
   name: "auth",
   initialState: {
-    user: null as MeResType | null,
+    user: null as ProfileType | null,
     isAuth: false,
     error: null as null | string,
-    profile: null as ProfileType | null,
+    // profile: null as ProfileType | null,
     email: "",
-    isLoading:false,
+    isLoading: false,
     password: "",
     name: "" as undefined | string
   },
@@ -75,9 +76,8 @@ const slice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.user = action.payload.profile;
         state.isAuth = true;
-        // state.isLoading = false;
       })
-     .addCase(getMe.fulfilled, (state, action) => {
+      .addCase(getMe.fulfilled, (state, action) => {
         if (action.payload) {
           state.user = action.payload.user;
           // console.log(state.user.email);
@@ -98,7 +98,7 @@ const slice = createSlice({
         if (state.user) {
           state.user.name = action.payload.data.updatedUser.name;
         }
-      })
+      });
 
   }
 });

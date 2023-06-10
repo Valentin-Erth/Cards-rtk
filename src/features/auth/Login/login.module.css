@@ -21,13 +21,14 @@
     font-weight: 600;
     font-size: 26px;
     line-height: 32px;
-     color: #000000;
+    color: #000000;
 }
 
 .forgot {
     position: relative;
 }
-.fogotLink{
+
+.fogotLink {
     position: absolute;
     width: 128px;
     right: 23px;
@@ -41,7 +42,8 @@
     color: #000000;
     text-decoration: none;
 }
-.refisterLink{
+
+.refisterLink {
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
@@ -52,13 +54,14 @@
     color: #366EFF;
     text-decoration: none;
 }
-.question{
+
+.question {
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
     line-height: 24px;
-        text-align: center;
+    text-align: center;
     color: #000000;
     opacity: 0.5;
 }

@@ -1,5 +1,4 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-import { authThunks } from "../features/auth/auth.slice";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
 
