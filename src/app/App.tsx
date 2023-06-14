@@ -11,10 +11,10 @@ import { Loader } from "../features/loader/loader";
 import { Header } from "../Header/Header";
 
 
+
 export const App = () => {
   const isLoading = useAppSelector((state) => state.app.isLoading);
-  const user = useAppSelector(state => state.auth.user);
-  const isAuthed=useAppSelector(state => state.auth.isAuth)
+  const isInitialized=useAppSelector(state => state.auth.isInitialized)
   const dispatch = useAppDispatch();
   // const navigate = useNavigate();
   useEffect(() => {
@@ -24,13 +24,13 @@ export const App = () => {
     }, 1000);
   }, []);
   useEffect(() => {
-    if (!isAuthed) {
+    if (!isInitialized) {
        dispatch(authThunks.getMe())
         // .unwrap()
         // .then(() => console.log("authorized"))
         // .catch((e) => navigate("/login"))
     }
-    }, [isAuthed]);
+    }, [isInitialized]);
 
 return (
   <div>
@@ -51,15 +51,3 @@ return (
 }
 ;
 //<CircularProgress size={100} />
-export const Layout = () => {
-  const isLoading = useAppSelector((state) => state.app.isLoading);
-  return (
-    <div>
-      <Header />
-      {isLoading ?
-        <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}><Loader /></div>
-        : <Outlet />}
-      {/*<div><h1>Footer</h1></div>*/}
-    </div>
-  );
-};

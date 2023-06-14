@@ -63,6 +63,7 @@ const slice = createSlice({
   initialState: {
     user: null as ProfileType | null,
     isAuth: false,
+    isInitialized:false,
     error: null as null | string,
     // profile: null as ProfileType | null,
     email: "",
@@ -82,7 +83,11 @@ const slice = createSlice({
           state.user = action.payload.user;
           // console.log(state.user.email);
           state.isAuth = !!state.user;
+          state.isInitialized=!!state.user;
         }
+      })
+      .addCase(getMe.rejected,(state, action)=>{
+        state.isInitialized=true;
       })
       .addCase(sendResetPassword.fulfilled, (state, action) => {
         console.log(action);

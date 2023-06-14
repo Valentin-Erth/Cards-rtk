@@ -8,12 +8,12 @@ import { Profile } from "../features/auth/Profile/Profile";
 import { FogotPassword } from "../features/auth/ResetPassword/FogotPassword";
 import { CheckEmail } from "../features/auth/ResetPassword/CheckEmail";
 import { SetPassword } from "../features/auth/ResetPassword/SetPassword";
-import { Layout } from "../app/App";
+import { Layout } from "./Layout";
+
 
 
 // const Layout = () => {
 //   return (
-//
 //     <div style={{height: '100vh'}}>
 //       <Header/>
 //       <div className={cls.content}>
@@ -25,21 +25,21 @@ import { Layout } from "../app/App";
 // }
 
 export const routes = createBrowserRouter([
-  // {
-  //   path: '/',
-  //   element: <Layout/>,
-  //   children: [
-  //     {
-  //       index: true,
-  //       path: '/packs',
-  //       element: <Packs/>
-  //     }
-  //   ]
-  // },
   {
-    path:"/",
-    element:<Navigate to={"/login"}/>
+    path: '/',
+    element: <Layout/>,
+    children: [
+      {
+        index: true,
+        path: '/profile',
+        element: <Profile/>
+      }
+    ]
   },
+  // {
+  //   path:"/",
+  //   element:<Navigate to={"/login"}/>
+  // },
   {
     path:"/404",
     element: <h1>404: PAGE NOT FOUND</h1>
@@ -69,10 +69,10 @@ export const routes = createBrowserRouter([
     element:<SetPassword/>
   },
   //require auth
-  {
-    path:"/profile",
-    element:<Profile/>
-  },
+  // {
+  //   path:"/profile",
+  //   element:<Profile/>
+  // },
   {
     path:"/packs",
     element:<Packs/>
