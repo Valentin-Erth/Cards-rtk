@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { authThunks } from "../features/auth/auth.slice";
 
 export const Layout = () => {
-  debugger
+  // debugger
   const navigate = useNavigate();
   const isLoading = useAppSelector((state) => state.app.isLoading);
   const isAuth=useAppSelector(state => state.auth.isAuth)
@@ -20,10 +20,11 @@ export const Layout = () => {
   return (
     <div>
       <Header />
-      {isLoading ?
-        <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}><Loader /></div>
-        : <Outlet />}
-      {/*<div><h1>Footer</h1></div>*/}
+      {/*{isLoading ?*/}
+      {/*  <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}><Loader /></div>*/}
+      {/*  : <Outlet />}*/}
+      <Outlet />
+     <footer>2023</footer>
     </div>
   );
 };

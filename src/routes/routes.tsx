@@ -10,8 +10,6 @@ import { CheckEmail } from "../features/auth/ResetPassword/CheckEmail";
 import { SetPassword } from "../features/auth/ResetPassword/SetPassword";
 import { Layout } from "./Layout";
 
-
-
 // const Layout = () => {
 //   return (
 //     <div style={{height: '100vh'}}>
@@ -33,48 +31,85 @@ export const routes = createBrowserRouter([
         index: true,
         path: '/profile',
         element: <Profile/>
-      }
-    ]
-  },
-  // {
-  //   path:"/",
-  //   element:<Navigate to={"/login"}/>
+      },
+      {
+        path:"/404",
+        element: <h1>404: PAGE NOT FOUND</h1>
+      },
+      // {
+      //   path:"*",
+      //   element: <Navigate to={"/404"}/>
+      // },
+      {
+        path:"/login",
+        element:<Login/>
+      },
+      {
+        path:"/register",
+        element:<Register/>
+      },
+      {
+        path:"/forgot-password",
+        element:<FogotPassword/>
+      },
+      {
+        path:"/check-email",
+        element:<CheckEmail/>
+      },
+      {
+        path:"/set-password/:token",
+        element:<SetPassword/>
+      },
+      //require auth
+      // {
+      //   path:"/profile",
+      //   element:<Profile/>
+      // },
+      {
+        path:"/packs",
+        element:<Packs/>
+      },
+    ]}
   // },
-  {
-    path:"/404",
-    element: <h1>404: PAGE NOT FOUND</h1>
-  },
+  // // {
+  // //   path:"/",
+  // //   element:<Navigate to={"/login"}/>
+  // // },
   // {
-  //   path:"*",
-  //   element: <Navigate to={"/404"}/>
+  //   path:"/404",
+  //   element: <h1>404: PAGE NOT FOUND</h1>
   // },
-  {
-    path:"/login",
-    element:<Login/>
-  },
-  {
-    path:"/register",
-    element:<Register/>
-  },
-  {
-    path:"/forgot-password",
-    element:<FogotPassword/>
-  },
-  {
-    path:"/check-email",
-    element:<CheckEmail/>
-  },
-  {
-    path:"/set-password/:token",
-    element:<SetPassword/>
-  },
-  //require auth
+  // // {
+  // //   path:"*",
+  // //   element: <Navigate to={"/404"}/>
+  // // },
   // {
-  //   path:"/profile",
-  //   element:<Profile/>
+  //   path:"/login",
+  //   element:<Login/>
   // },
-  {
-    path:"/packs",
-    element:<Packs/>
-  },
+  // {
+  //   path:"/register",
+  //   element:<Register/>
+  // },
+  // {
+  //   path:"/forgot-password",
+  //   element:<FogotPassword/>
+  // },
+  // {
+  //   path:"/check-email",
+  //   element:<CheckEmail/>
+  // },
+  // {
+  //   path:"/set-password/:token",
+  //   element:<SetPassword/>
+  // },
+  // //require auth
+  // // {
+  // //   path:"/profile",
+  // //   element:<Profile/>
+  // // },
+  // {
+  //   path:"/packs",
+  //   element:<Packs/>
+  // },
 ])
