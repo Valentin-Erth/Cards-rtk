@@ -64,13 +64,9 @@ const slice = createSlice({
     user: null as ProfileType | null,
     isAuth: false,
     isInitialized:false,
-    error: null as null | string,
-    // profile: null as ProfileType | null,
     email: "",
-    isLoading: false,
     password: "",
-    name: "" as undefined | string
-  },
+    },
   reducers: {},
   extraReducers: builder => {
     builder

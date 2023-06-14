@@ -2,7 +2,7 @@ import { instance } from "../../common/api/common.api";
 
 export const packsApi={
   getPacks:(arg:GetPacksArg)=>{
-return instance.get<any>('cards/pack',{params:{...arg}})
+return instance.get<PacksResType>('cards/pack',{params:{...arg}})
 },
   addPack:(arg:AddPackArg)=>{
     return instance.post('cards/pack')
@@ -16,7 +16,7 @@ return instance.get<any>('cards/pack',{params:{...arg}})
 }
 
 //Types
-type GetPacksArg={
+export type GetPacksArg={
   packName?: string;
   min?: number;
   max?: number;
@@ -25,11 +25,11 @@ type GetPacksArg={
   pageCount?: number;
   user_id?: string;
 }
-type PacksResType={
+export type PacksResType={
   cardPacks: CardPackType[];
   page: number; //выбранная страница
   pageCount: number; //количество эл-ов на странице
-  cardPacksTotfalCount: number; //количество колод
+  cardPacksTotalCount: number; //количество колод
   minCardsCount: number;
   maxCardsCount: number;
   token: string;
