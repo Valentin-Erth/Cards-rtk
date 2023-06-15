@@ -17,10 +17,12 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { RootState } from "../../app/store";
 import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
+import TablePagination from '@mui/material/TablePagination';
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import s from "./Packs.module.css";
+import { SearchField } from "./search";
 
 
 export type QueryParamsType = {
@@ -56,18 +58,18 @@ export const Packs = () => {
     ? Math.ceil(packsCount / queryParams.pageCount)
     : 10;
   useEffect(() => {
-    debugger
+    // debugger
     console.log("useEffect get packs");
     getPacks(queryParams);
-  }, []);
+  }, [queryParams]);
 
-  // const showMyPacks = () => {
-  //   console.log(userId);
-  //   if (userId) setQueryParams({ ...queryParams, user_id: userId });
-  // };
-  // const showAllPacks = () => {
-  //   setQueryParams({ ...queryParams, user_id: "" });
-  // };
+  const showMyPacks = () => {
+    console.log(userId);
+    if (userId) setQueryParams({ ...queryParams, user_id: userId });
+  };
+  const showAllPacks = () => {
+    setQueryParams({ ...queryParams, user_id: "" });
+  };
   // const sliderCallBack = (arr: number[]) => {
   //   setQueryParams({ ...queryParams, min: arr[0], max: arr[1] });
   // };
@@ -84,15 +86,27 @@ export const Packs = () => {
   //     sortPacks: ""
   //   });
   // };
-  //TODO
-  // add update delete
+  const changeDateFormat = (date: Date) => {
+    const newDate = new Date(date);
+    return `${newDate.getDate().toString().padStart(2, "0")}.${(newDate.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}.${newDate.getFullYear().toString()}`;
+  };
+  //TODO  add update delete
+
   // const paginationChangeHandler = (event: React.ChangeEvent<unknown>, value: number) => {
   //   setQueryParams({ ...queryParams, page: value });
   // };
   // const changeCountRows = (event: SelectChangeEvent) => {
   //   setQueryParams({ ...queryParams, pageCount: +event.target.value });
   // };
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setQueryParams({ ...queryParams, page: newPage });
+  };
 
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQueryParams({ ...queryParams, pageCount: +event.target.value });
+    };
   return (
     <div className={s.packs}>
       <div className={s.packsContainer}>
@@ -106,16 +120,21 @@ export const Packs = () => {
         <div className={s.actionsBlock}>
           <div className={s.search}>
             <span>Search</span>
-            <input type="text" />
+            <SearchField
+              queryParams={queryParams}
+              setQueryParams={setQueryParams}
+              searchValue={searchBarValue}
+              setSearchValue={setSearchBarValue}
+            />
           </div>
           <div className={s.showCards}>
             <span>Show packs cards</span>
             <div className={s.buttons}>
-              <Button variant={"contained"} color={"primary"}
+              <Button variant={"contained"} color={"primary"} onClick={showMyPacks}
                       style={{ borderRadius: "30px", width: "98px" }}>
                 My
               </Button>
-              <Button variant={"contained"} color={"primary"}
+              <Button variant={"contained"} color={"primary"} onClick={showAllPacks}
                       style={{ borderRadius: "30px", width: "98px" }}>
                 All
               </Button>
@@ -124,11 +143,11 @@ export const Packs = () => {
 
         </div>
 
-        {/*{cardPacks.length === 0 ? (*/}
-        {/*  <div className={s.noPacksError}>*/}
-        {/*    Колоды не найдены.*/}
-        {/*  </div>*/}
-        {/*) : (*/}
+        {cardPacks.length === 0 ? (
+          <div className={s.noPacksError}>
+            Колоды не найдены.
+          </div>
+        ) : (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <colgroup>
@@ -157,7 +176,7 @@ export const Packs = () => {
                       {p.name}
                     </TableCell>
                     <TableCell align="left">{p.cardsCount}</TableCell>
-                    <TableCell align="left">{JSON.stringify(p.updated)}</TableCell>
+                    <TableCell align="left">{changeDateFormat(p.updated)}</TableCell>
                     <TableCell align="left">{p.user_name}</TableCell>
                     <TableCell align="left" sx={{ padding: "16px 28px 16px 8px" }}>
                       <IconButton aria-label="learn">
@@ -181,28 +200,36 @@ export const Packs = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        {/*)}*/}
+        )}
 
-        <div className={s.paginationBlock}>
-          <Pagination
-            shape={"rounded"}
-            count={packsPaginationCount}
-            color="primary"
-            page={queryParams.page}
-            onChange={()=>{}}
-
-          />
-          <span>Show</span>
-          <FormControl>
-            <Select value={queryParams.pageCount.toString()} onChange={()=>{}} autoWidth>
-              <MenuItem value={"4"}>4</MenuItem>
-              <MenuItem value={"6"}>6</MenuItem>
-              <MenuItem value={"8"}>8</MenuItem>
-              <MenuItem value={"10"}>10</MenuItem>
-            </Select>
-          </FormControl>
-          <span>Packs per page</span>
-        </div>
+        {/*<div className={s.paginationBlock}>*/}
+        {/*  <Pagination*/}
+        {/*    shape={"rounded"}*/}
+        {/*    count={packsPaginationCount}*/}
+        {/*    color="primary"*/}
+        {/*    page={queryParams.page}*/}
+        {/*    onChange={paginationChangeHandler}*/}
+        {/*  />*/}
+        {/*  <span>Show</span>*/}
+        {/*  <FormControl>*/}
+        {/*    <Select value={queryParams.pageCount.toString()} onChange={changeCountRows} autoWidth>*/}
+        {/*      <MenuItem value={"4"}>4</MenuItem>*/}
+        {/*      <MenuItem value={"6"}>6</MenuItem>*/}
+        {/*      <MenuItem value={"8"}>8</MenuItem>*/}
+        {/*      <MenuItem value={"10"}>10</MenuItem>*/}
+        {/*    </Select>*/}
+        {/*  </FormControl>*/}
+        {/*  <span>Packs per page</span>*/}
+        {/*</div>*/}
+        <TablePagination
+          rowsPerPageOptions={[4, 6,8,10]}
+          component="div"
+          count={packsPaginationCount}
+          rowsPerPage={queryParams.pageCount}
+          page={queryParams.page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </div>
     </div>
   );

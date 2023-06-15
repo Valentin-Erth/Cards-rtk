@@ -8,7 +8,7 @@ export const getPacks=createAppAsyncThunk<{ packs:PacksResType },GetPacksArg >("
   async (arg, thunkAPI)=>{
   return thunkTryCatch(thunkAPI,async ()=>{
     const res=await packsApi.getPacks(arg)
-    console.log(res.data);
+    // console.log(res.data);
     return {packs: res.data}
   })
   }

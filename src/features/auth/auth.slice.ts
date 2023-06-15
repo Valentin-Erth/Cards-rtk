@@ -34,7 +34,7 @@ const logout = createAppAsyncThunk("auth/logout", async (arg, thunkAPI) => {
 const getMe = createAppAsyncThunk("auth/getMe", async (arg, thunkAPI) => {
   return thunkTryCatch(thunkAPI, async () => {
     const res = await authApi.getMe();
-    console.log(res);
+    // console.log(res);
     return { user: res.data };
   }, false);
 });
@@ -65,8 +65,8 @@ const slice = createSlice({
     isAuth: false,
     isInitialized: false,
     email: "",
-    password: "",
-    },
+    password: ""
+  },
   reducers: {},
   extraReducers: builder => {
     builder
@@ -77,25 +77,27 @@ const slice = createSlice({
       .addCase(getMe.fulfilled, (state, action) => {
         if (action.payload) {
           state.user = action.payload.user;
-          // console.log(state.user.email);
           state.isAuth = true;
-          state.isInitialized=true;
+          state.isInitialized = true;
         }
       })
-      .addCase(getMe.rejected,(state, action)=>{
-        state.isInitialized=true;
+      .addCase(getMe.rejected, (state, action) => {
+        state.isInitialized = true;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isAuth = false;
       })
       .addCase(sendResetPassword.fulfilled, (state, action) => {
-        console.log(action);
+        // console.log(action);
         state.email = action.meta.arg.email;
       })
       .addCase(setNewPassword.fulfilled, (state, action) => {
         // debugger
         state.password = action.meta.arg.password;
-        console.log(current(state));
+        // console.log(current(state));
       })
       .addCase(editMe.fulfilled, (state, action) => {
-        console.log(action);
+        // console.log(action);
         if (state.user) {
           state.user.name = action.payload.data.updatedUser.name;
         }

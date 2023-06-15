@@ -8,9 +8,8 @@ import { authThunks } from "../features/auth/auth.slice";
 export const Layout = () => {
   // debugger
   const navigate = useNavigate();
-  const isLoading = useAppSelector((state) => state.app.isLoading);
   const isAuth=useAppSelector(state => state.auth.isAuth)
-  console.log(isAuth);
+  // console.log(isAuth);
   useEffect(() => {
     if(!isAuth){
       navigate('/login')
@@ -20,10 +19,7 @@ export const Layout = () => {
   return (
     <div>
       <Header />
-      {/*{isLoading ?*/}
-      {/*  <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}><Loader /></div>*/}
-      {/*  : <Outlet />}*/}
-      <Outlet />
+       <Outlet />
      <footer>2023</footer>
     </div>
   );

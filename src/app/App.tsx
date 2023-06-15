@@ -25,10 +25,7 @@ export const App = () => {
 
     return (
       <div>
-        {/*{isLoading ?*/}
-        {/*  <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}><Loader /></div>*/}
-        {/*  : <RouterProvider router={routes} />}*/}
-        {(isLoading || !isInitialized) && createPortal(
+         {(isLoading || !isInitialized) && createPortal(
           <div style={{ position: "absolute", inset: 0, display:'flex', justifyContent:'center', alignItems: 'center', backgroundColor:'#fff', zIndex:10 }}><Loader /></div>, document.body) }
         <RouterProvider router={routes} />
         <ToastContainer

@@ -33,7 +33,7 @@ export const slice = createSlice({
       return action.type.endsWith("/pending")
       }
       ,(state, action) => {
-        console.log(action);
+        // console.log(action);
       state.isLoading=true
     })
       .addMatcher((action)=> {
