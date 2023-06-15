@@ -1,7 +1,7 @@
 import React from "react";
 import s from "./SetPaswword.module.css";
 import mail from "../../../images/Group 281.svg";
-import { useAppSelector } from "../../../app/hooks";
+import { useAppSelector } from "../../../common/hooks/hooks";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 

@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch } from "../../../common/hooks/hooks";
 import { authThunks } from "../auth.slice";
 
 

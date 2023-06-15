@@ -63,7 +63,7 @@ const slice = createSlice({
   initialState: {
     user: null as ProfileType | null,
     isAuth: false,
-    isInitialized:false,
+    isInitialized: false,
     email: "",
     password: "",
     },
@@ -78,8 +78,8 @@ const slice = createSlice({
         if (action.payload) {
           state.user = action.payload.user;
           // console.log(state.user.email);
-          state.isAuth = !!state.user;
-          state.isInitialized=!!state.user;
+          state.isAuth = true;
+          state.isInitialized=true;
         }
       })
       .addCase(getMe.rejected,(state, action)=>{

@@ -29,8 +29,9 @@ export const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        path: '/profile',
-        element: <Profile/>
+        path:"/packs",
+        element:<Packs/>
+
       },
       {
         path:"/404",
@@ -66,8 +67,8 @@ export const routes = createBrowserRouter([
       //   element:<Profile/>
       // },
       {
-        path:"/packs",
-        element:<Packs/>
+        path: '/profile',
+        element: <Profile/>
       },
     ]}
   // },

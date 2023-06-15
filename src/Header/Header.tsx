@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../images/Group 753.svg";
 import s from "./header.module.css";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../common/hooks/hooks";
 import ava from "../images/8_102.jpg";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";

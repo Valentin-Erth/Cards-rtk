@@ -5,7 +5,7 @@ import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch } from "../../../common/hooks/hooks";
 import { authThunks } from "../auth.slice";
 import s from "./login.module.css";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -43,7 +43,7 @@ export const Login = () => {
       .then((res)=>{
         // console.log(res);
         toast.success("You have successfully logged in")
-        navigate('/profile')})
+        navigate('/packs')})
      };
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);

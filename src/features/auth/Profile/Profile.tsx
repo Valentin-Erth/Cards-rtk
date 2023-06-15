@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch } from "../../../common/hooks/hooks";
 import Button from "@mui/material/Button";
 import s from "./Profile.module.css";
 import LogoutIcon from "@mui/icons-material/Logout";

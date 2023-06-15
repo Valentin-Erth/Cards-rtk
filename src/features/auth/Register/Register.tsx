@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../common/hooks/hooks";
 import { authThunks } from "../auth.slice";
 import s from "./register.module.css";
 import FormControl from "@mui/material/FormControl";

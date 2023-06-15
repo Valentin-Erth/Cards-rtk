@@ -5,10 +5,11 @@ export const packsApi={
 return instance.get<PacksResType>('cards/pack',{params:{...arg}})
 },
   addPack:(arg:AddPackArg)=>{
-    return instance.post('cards/pack')
+    return instance.post('cards/pack',
+      {cardsPack:{...arg}})
   },
   deletePack:(id:string)=>{
-    return instance.delete( `/cards/pack?id=${id}`)
+    return instance.delete( `cards/pack?id=${id}`)
   },
   updatePack:(arg:UpdatePackArg)=>{
     return instance.put('cards/pack',{cardsPack:{...arg}})

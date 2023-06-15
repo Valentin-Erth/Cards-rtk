@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../common/hooks/hooks";
 import { Header } from "../Header/Header";
 import { Loader } from "../features/loader/loader";
 import React, { useEffect } from "react";
