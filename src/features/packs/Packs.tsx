@@ -17,12 +17,13 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { RootState } from "../../app/store";
 import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
-import TablePagination from '@mui/material/TablePagination';
+import TablePagination from "@mui/material/TablePagination";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import s from "./Packs.module.css";
 import { SearchField } from "./search";
+import { PacksSlider } from "./PackSlider/PackSlider";
 
 
 export type QueryParamsType = {
@@ -46,7 +47,7 @@ export const Packs = () => {
   const [sliderValuesLocal, setSliderValuesLocal] = useState([minCardsCount, maxCardsCount]);
   const [queryParams, setQueryParams] = useState<QueryParamsType>({
     packName: "",
-    page: 1,
+    page: 0,
     pageCount: 6,
     min: 0,
     max: 100,
@@ -64,28 +65,28 @@ export const Packs = () => {
   }, [queryParams]);
 
   const showMyPacks = () => {
-    console.log(userId);
+    // console.log(userId);
     if (userId) setQueryParams({ ...queryParams, user_id: userId });
   };
   const showAllPacks = () => {
     setQueryParams({ ...queryParams, user_id: "" });
   };
-  // const sliderCallBack = (arr: number[]) => {
-  //   setQueryParams({ ...queryParams, min: arr[0], max: arr[1] });
-  // };
-  // const resetFiltersHandler = () => {
-  //   setSearchBarValue("");
-  //   setSliderValuesLocal([minCardsCount, maxCardsCount]);
-  //   setQueryParams({
-  //     packName: "",
-  //     min: 0,
-  //     max: 100,
-  //     page: 1,
-  //     pageCount: 6,
-  //     user_id: "",
-  //     sortPacks: ""
-  //   });
-  // };
+  const sliderCallBack = (arr: number[]) => {
+    setQueryParams({ ...queryParams, min: arr[0], max: arr[1] });
+  };
+  const resetFiltersHandler = () => {
+    setSearchBarValue("");
+    setSliderValuesLocal([minCardsCount, maxCardsCount]);
+    setQueryParams({
+      packName: "",
+      min: 0,
+      max: 100,
+      page: 1,
+      pageCount: 6,
+      user_id: "",
+      sortPacks: ""
+    });
+  };
   const changeDateFormat = (date: Date) => {
     const newDate = new Date(date);
     return `${newDate.getDate().toString().padStart(2, "0")}.${(newDate.getMonth() + 1)
@@ -106,7 +107,7 @@ export const Packs = () => {
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQueryParams({ ...queryParams, pageCount: +event.target.value });
-    };
+  };
   return (
     <div className={s.packs}>
       <div className={s.packsContainer}>
@@ -140,9 +141,17 @@ export const Packs = () => {
               </Button>
             </div>
           </div>
-
+          <div className={s.slider}>
+            <span>Number of cards</span>
+            <div className={s.sliderContent}>
+              <PacksSlider
+                sliderCallBack={sliderCallBack}
+                sliderValuesLocal={sliderValuesLocal}
+                setSliderValuesLocal={setSliderValuesLocal}
+              />
+            </div>
+          </div>
         </div>
-
         {cardPacks.length === 0 ? (
           <div className={s.noPacksError}>
             Колоды не найдены.
@@ -222,7 +231,7 @@ export const Packs = () => {
         {/*  <span>Packs per page</span>*/}
         {/*</div>*/}
         <TablePagination
-          rowsPerPageOptions={[4, 6,8,10]}
+          rowsPerPageOptions={[4, 6, 8, 10]}
           component="div"
           count={packsPaginationCount}
           rowsPerPage={queryParams.pageCount}
