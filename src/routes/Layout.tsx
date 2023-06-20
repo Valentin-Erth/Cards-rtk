@@ -10,11 +10,11 @@ export const Layout = () => {
   const navigate = useNavigate();
   const isAuth=useAppSelector(state => state.auth.isAuth)
   // console.log(isAuth);
-  useEffect(() => {
-    if(!isAuth){
-      navigate('/login')
-    }
-  }, [isAuth]);
+  // useEffect(() => {
+  //   if(!isAuth){
+  //     navigate('/login')
+  //   }
+  // }, [isAuth]);
 
   return (
     <div>

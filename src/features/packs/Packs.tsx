@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../common/utils/createAppAsyncThunk";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useActions, useAppDispatch } from "../../common/hooks/hooks";
 import { packsThunks } from "./pack.slice";
 import Table from "@mui/material/Table";
@@ -11,6 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import SchoolIcon from "@mui/icons-material/School";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -18,6 +19,7 @@ import { RootState } from "../../app/store";
 import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 import TablePagination from "@mui/material/TablePagination";
+import TableSortLabel from "@mui/material/TableSortLabel";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -64,6 +66,21 @@ export const Packs = () => {
     getPacks(queryParams);
   }, [queryParams]);
 
+  const updatedSortHandler = () => {
+    if (queryParams.sortPacks === "1updated" || queryParams.sortPacks === "") {
+      setQueryParams((prevState) => ({
+        ...prevState,
+        sortPacks: "0updated",
+        page: 0,
+      }));
+    } else {
+      setQueryParams((prevState) => ({
+        ...prevState,
+        sortPacks: "1updated",
+        page: 0,
+      }));
+    }
+  };
   const showMyPacks = () => {
     // console.log(userId);
     if (userId) setQueryParams({ ...queryParams, user_id: userId });
@@ -151,10 +168,15 @@ export const Packs = () => {
               />
             </div>
           </div>
+          <div className={s.resetFilter}>
+            <IconButton aria-label="filterOff" onClick={resetFiltersHandler}>
+              <FilterAltOffIcon color={"primary"} />
+            </IconButton>
+          </div>
         </div>
         {cardPacks.length === 0 ? (
           <div className={s.noPacksError}>
-            Колоды не найдены.
+            Колоды не найдены. Измените параметры фильтра / поиска
           </div>
         ) : (
           <TableContainer component={Paper}>
@@ -170,7 +192,15 @@ export const Packs = () => {
                 <TableRow>
                   <TableCell sx={{ padding: "16px 16px 16px 36px" }}>Name</TableCell>
                   <TableCell align="left">Cards</TableCell>
-                  <TableCell align="left">Last updated</TableCell>
+                  <TableCell align="left" onClick={updatedSortHandler}
+                             sx={{ display: "flex" }}>
+                    <TableSortLabel
+                      active={queryParams.sortPacks !== ""} //should be true for the sorted column
+                      direction={queryParams.sortPacks !== "0updated" ? "desc" : "asc"} // The current sort direction /"desc"
+                    >
+                      Last updated
+                    </TableSortLabel>
+                  </TableCell>
                   <TableCell align="left">Created By</TableCell>
                   <TableCell align="left" sx={{ padding: "16px 36px 16px 16px" }}>
                     Actions
@@ -182,27 +212,35 @@ export const Packs = () => {
                   <TableRow key={p._id}
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell component="th" scope="row" sx={{ padding: "16px 16px 16px 36px" }}>
-                      {p.name}
+                      <Link to={`/cards/pack/${p._id}`} style={{ textDecoration: "none", color: "inherit" }}>{p.name}</Link>
                     </TableCell>
                     <TableCell align="left">{p.cardsCount}</TableCell>
                     <TableCell align="left">{changeDateFormat(p.updated)}</TableCell>
                     <TableCell align="left">{p.user_name}</TableCell>
                     <TableCell align="left" sx={{ padding: "16px 28px 16px 8px" }}>
-                      <IconButton aria-label="learn">
-                        <SchoolIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="edit"
-                        // onClick={() => updatePackHandler(p._id, "updatedPack13")}
-                        //TODO modal
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton aria-label="delete"
+                      <span style={{ width: "33%" }}>
+                        {p.cardsCount !== 0 && (
+                          <IconButton aria-label="learn">
+                            <SchoolIcon color={"primary"} />
+                          </IconButton>
+                        )}
+                      </span>
+                      {userId===p.user_id && (
+                        <span style={{ width: "67%" }}>
+                        <IconButton aria-label="edit"
+                          // onClick={() => updatePackHandler(p._id, "updatedPack13")}
+                          //TODO modal
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton aria-label="delete"
                         // onClick={() => deletePackHandler(p._id)}
-                      >
+                        >
                         <DeleteOutlineIcon />
-                      </IconButton>
+                        </IconButton>
+                          </span>
+                      )}
+
                     </TableCell>
                   </TableRow>
                 ))}
