@@ -1,23 +1,23 @@
 import { instance } from "../../common/api/common.api";
 
-export const packsApi={
-  getPacks:(arg:GetPacksArg)=>{
-return instance.get<PacksResType>('cards/pack',{params:{...arg}})
-},
-  addPack:(arg:AddPackArg)=>{
-    return instance.post('cards/pack',
-      {cardsPack:{...arg}})
+export const packsApi = {
+  getPacks: (arg: GetPacksArg) => {
+    return instance.get<PacksResType>("cards/pack", { params: { ...arg } });
   },
-  deletePack:(id:string)=>{
-    return instance.delete( `cards/pack?id=${id}`)
+  addPack: (arg: AddPackArg) => {
+    return instance.post("cards/pack",
+      { cardsPack: { ...arg } });
   },
-  updatePack:(arg:UpdatePackArg)=>{
-    return instance.put('cards/pack',{cardsPack:{...arg}})
+  deletePack: (id: string) => {
+    return instance.delete(`cards/pack?id=${id}`);
+  },
+  updatePack: (arg: UpdatePackArg) => {
+    return instance.put("cards/pack", { cardsPack: { ...arg } });
   }
-}
+};
 
 //Types
-export type GetPacksArg={
+export type GetPacksArg = {
   packName?: string;
   min?: number;
   max?: number;
@@ -26,7 +26,7 @@ export type GetPacksArg={
   pageCount?: number;
   user_id?: string;
 }
-export type PacksResType={
+export type PacksResType = {
   cardPacks: CardPackType[];
   page: number; //выбранная страница
   pageCount: number; //количество эл-ов на странице
@@ -54,7 +54,7 @@ export type CardPackType = {
   more_id: string;
   __v: number;
 };
-type AddPackArg={
+export type AddPackArg = {
   name?: string; // если не отправить будет "no Name"
   deckCover?: string; // не обязателен  url/base64
   private?: boolean; // если не отправить будет false

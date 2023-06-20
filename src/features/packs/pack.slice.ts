@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CardPackType, GetPacksArg, packsApi, PacksResType } from "./packsApi";
+import { AddPackArg, CardPackType, GetPacksArg, packsApi, PacksResType, UpdatePackArg } from "./packsApi";
 import { createAppAsyncThunk } from "../../common/utils/createAppAsyncThunk";
 import { thunkTryCatch } from "../../common/utils/thunk-try-catch";
 
@@ -13,6 +13,43 @@ export const getPacks=createAppAsyncThunk<{ packs:PacksResType },GetPacksArg >("
   })
   }
 )
+export const addPack = createAppAsyncThunk<{ pack: CardPackType }, AddPackArg>(
+  "packs/addPack",
+   (arg, thunkAPI) => {
+    const { dispatch } = thunkAPI;
+    return thunkTryCatch(thunkAPI, async () => {
+      await packsApi.addPack(arg);
+      await dispatch(getPacks({pageCount:6}));
+      // return { pack: res.data.newCardsPack}
+    });
+  }
+);
+export const removePack = createAppAsyncThunk<{ packId: string }, string>(
+  "packs/deletePack",
+  async (id, thunkAPI) => {
+    const { dispatch } = thunkAPI;
+    return thunkTryCatch(thunkAPI, async () => {
+      await packsApi.deletePack(id);
+      await dispatch(getPacks({}));
+      // TODO fetch packs with prev queryParams after delete  action
+      // return {packId: res.data.deletedCardsPack._id}
+    });
+  }
+);
+export const updatePack = createAppAsyncThunk<{ pack: CardPackType }, UpdatePackArg>(
+  "packs/updatePack",
+  async (arg, thunkAPI) => {
+    const { dispatch } = thunkAPI;
+    return thunkTryCatch(thunkAPI, async () => {
+      dispatch(packActions.savePackName(arg.name));
+      await packsApi.updatePack(arg);
+      await dispatch(getPacks({}));
+      // return {pack: res.data.updatedCardsPack}
+    });
+  }
+);
+
+
 
 const slice=createSlice({
   name: "packs",
@@ -24,7 +61,12 @@ const slice=createSlice({
     page: 1 as number, // выбранная страница
     pageCount: 6 as number, // количество элементов на странице
   },
-  reducers:{},
+  reducers: {
+    savePackName: (state, action) => {
+      let packName = state.cardPacks.find((f) => f.name);
+      packName = action.payload;
+    },
+  },
   extraReducers:(builder)=>{
 builder
   .addCase(getPacks.fulfilled, (state, action)=>{
@@ -39,4 +81,5 @@ builder
 })
 export const packReducer=slice.reducer
 export const packActions=slice.actions
-export const packsThunks = {getPacks}
+export const packsThunks = {getPacks,addPack,removePack,updatePack}
+

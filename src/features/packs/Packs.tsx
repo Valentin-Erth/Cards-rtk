@@ -39,7 +39,7 @@ export type QueryParamsType = {
 };
 export const Packs = () => {
   console.log("Packs");
-  const { getPacks } = useActions(packsThunks);
+  const { getPacks,addPack,updatePack,removePack} = useActions(packsThunks);
   const isAuth = useAppSelector(state => state.auth.isAuth);
   const cardPacks = useAppSelector((state: RootState) => state.packs.cardPacks);
   const packsCount = useAppSelector((state: RootState) => state.packs.cardPacksTotalCount);
@@ -131,7 +131,7 @@ export const Packs = () => {
         <div className={s.titleBlock}>
           <span className={s.title}>Packs List</span>
           <Button variant={"contained"} color={"primary"}
-                  style={{ borderRadius: "30px", width: "175px" }}>
+                  style={{ borderRadius: "30px", width: "175px" }} onClick={()=>{addPack({name:"NewPack"})}}>
             Add new pack
           </Button>
         </div>
@@ -228,13 +228,13 @@ export const Packs = () => {
                       {userId===p.user_id && (
                         <span style={{ width: "67%" }}>
                         <IconButton aria-label="edit"
-                          // onClick={() => updatePackHandler(p._id, "updatedPack13")}
+                          onClick={() => updatePack({_id: p._id, name:"updatedPack13" })}
                           //TODO modal
                         >
                           <EditIcon />
                         </IconButton>
                         <IconButton aria-label="delete"
-                        // onClick={() => deletePackHandler(p._id)}
+                        onClick={() => removePack(p._id)}
                         >
                         <DeleteOutlineIcon />
                         </IconButton>
