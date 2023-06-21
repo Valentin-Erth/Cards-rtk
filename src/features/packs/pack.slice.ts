@@ -18,9 +18,10 @@ export const addPack = createAppAsyncThunk<{ pack: CardPackType }, AddPackArg>(
    (arg, thunkAPI) => {
     const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
-      await packsApi.addPack(arg);
-      await dispatch(getPacks({pageCount:6}));
-      // return { pack: res.data.newCardsPack}
+      const res=await packsApi.addPack(arg);
+      return { pack: res.data.newCardsPack}
+      // dispatch(getPacks({}));
+
     });
   }
 );
@@ -29,10 +30,10 @@ export const removePack = createAppAsyncThunk<{ packId: string }, string>(
   async (id, thunkAPI) => {
     const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
-      await packsApi.deletePack(id);
-      await dispatch(getPacks({}));
-      // TODO fetch packs with prev queryParams after delete  action
-      // return {packId: res.data.deletedCardsPack._id}
+     const res= await packsApi.deletePack(id);
+      // dispatch(getPacks({}));
+      // // TODO fetch packs with prev queryParams after delete  action
+      return {packId: res.data.deletedCardsPack._id}
     });
   }
 );
@@ -42,9 +43,9 @@ export const updatePack = createAppAsyncThunk<{ pack: CardPackType }, UpdatePack
     const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
       dispatch(packActions.savePackName(arg.name));
-      await packsApi.updatePack(arg);
-      await dispatch(getPacks({}));
-      // return {pack: res.data.updatedCardsPack}
+      const res=await packsApi.updatePack(arg);
+      // dispatch(getPacks({}));
+      return {pack: res.data.updatedCardsPack}
     });
   }
 );
@@ -76,6 +77,25 @@ builder
     state.minCardsCount = action.payload.packs.minCardsCount;
     state.page = action.payload.packs.page;
     state.pageCount = action.payload.packs.pageCount;
+  })
+  .addCase(addPack.fulfilled,(state, action)=>{
+    state.cardPacks.unshift(action.payload.pack)
+  })
+  .addCase(removePack.fulfilled,(state, action)=>{
+    // const newPacks=state.cardPacks.filter((packs)=>{
+    //   return packs._id!==action.payload.packId
+    //   })
+    // state.cardPacks=newPacks
+    const index = state.cardPacks.findIndex((pack) => pack._id === action.payload.packId);
+    if (index !== -1) {
+      state.cardPacks.splice(index, 1);
+    };
+  })
+  .addCase(updatePack.fulfilled, (state, action)=>{
+    const index = state.cardPacks.findIndex((pack) => pack._id === action.payload.pack._id);
+    if (index !== -1) {
+      state.cardPacks[index]=action.payload.pack
+    };
   })
   }
 })
