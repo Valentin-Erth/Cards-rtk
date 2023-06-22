@@ -7,9 +7,9 @@ import { thunkTryCatch } from "../../common/utils/thunk-try-catch";
 export const getPacks=createAppAsyncThunk<{ packs:PacksResType },GetPacksArg >("packs/getPacks",
   async (arg, thunkAPI)=>{
   return thunkTryCatch(thunkAPI,async ()=>{
-   await packsApi.getPacks(arg)
+   const res=await packsApi.getPacks(arg)
     // console.log(res.data);
-    // return {packs: res.data}
+    return {packs: res.data}
   })
   }
 )
