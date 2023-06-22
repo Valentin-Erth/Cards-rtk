@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../common/utils/createAppAsyncThunk";
 import { Link, Navigate } from "react-router-dom";
-import { useActions, useAppDispatch } from "../../common/hooks/hooks";
 import { packsThunks } from "./pack.slice";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -26,6 +25,9 @@ import MenuItem from "@mui/material/MenuItem";
 import s from "./Packs.module.css";
 import { SearchField } from "./search";
 import { PacksSlider } from "./PackSlider/PackSlider";
+import { maxCardsCount_Selector, minCardsCount_Selector, packs_Selector, packsCount_Selector } from "./packsSelector";
+import { isAuth_auth_Selector, userId_auth_Selector } from "../auth/authSelectors";
+import { useActions } from "../../common/hooks/useActions";
 
 
 export type QueryParamsType = {
@@ -40,12 +42,12 @@ export type QueryParamsType = {
 export const Packs = () => {
   console.log("Packs");
   const { getPacks,addPack,updatePack,removePack} = useActions(packsThunks);
-  const isAuth = useAppSelector(state => state.auth.isAuth);
-  const cardPacks = useAppSelector((state: RootState) => state.packs.cardPacks);
-  const packsCount = useAppSelector((state: RootState) => state.packs.cardPacksTotalCount);
-  const userId = useAppSelector((state: RootState) => state.auth.user?._id);
-  const minCardsCount = useAppSelector((state: RootState) => state.packs.minCardsCount);
-  const maxCardsCount = useAppSelector((state: RootState) => state.packs.maxCardsCount);
+  const isAuth = useAppSelector(isAuth_auth_Selector);
+  const packs = useAppSelector(packs_Selector);
+  const packsCount = useAppSelector(packsCount_Selector);
+  const userId = useAppSelector(userId_auth_Selector);
+  const minCardsCount = useAppSelector(minCardsCount_Selector);
+  const maxCardsCount = useAppSelector(maxCardsCount_Selector);
   const [sliderValuesLocal, setSliderValuesLocal] = useState([minCardsCount, maxCardsCount]);
   const [queryParams, setQueryParams] = useState<QueryParamsType>({
     packName: "",
@@ -174,7 +176,7 @@ export const Packs = () => {
             </IconButton>
           </div>
         </div>
-        {cardPacks.length === 0 ? (
+        {packs.length === 0 ? (
           <div className={s.noPacksError}>
             Колоды не найдены. Измените параметры фильтра / поиска
           </div>
@@ -208,7 +210,7 @@ export const Packs = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cardPacks.map((p) => (
+                {packs.map((p) => (
                   <TableRow key={p._id}
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell component="th" scope="row" sx={{ padding: "16px 16px 16px 36px" }}>
@@ -266,7 +268,7 @@ export const Packs = () => {
         {/*      <MenuItem value={"10"}>10</MenuItem>*/}
         {/*    </Select>*/}
         {/*  </FormControl>*/}
-        {/*  <span>Packs per page</span>*/}
+        {/*  <span>packs per page</span>*/}
         {/*</div>*/}
         <TablePagination
           rowsPerPageOptions={[4, 6, 8, 10]}

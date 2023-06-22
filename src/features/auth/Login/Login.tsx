@@ -5,7 +5,6 @@ import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
-import { useAppDispatch } from "../../../common/hooks/hooks";
 import { authThunks } from "../auth.slice";
 import s from "./login.module.css";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -16,6 +15,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import { Loader } from "../../loader/loader";
 import { toast } from "react-toastify";
+import { useActions } from "../../../common/hooks/useActions";
 
 
 type FormInputType = {
@@ -24,21 +24,14 @@ type FormInputType = {
   rememberMe: boolean
 }
 export const Login = () => {
-  const dispatch = useAppDispatch();
+  const {login}=useActions(authThunks)
   const navigate = useNavigate();
-  const loginHandler = () => {
-    const payload = {
-      email: "kozlov0020@gmail.com",
-      password: "1qazxcvBG",
-      rememberMe: false
-    };
-    dispatch(authThunks.login(payload));
-  };
+
   const { register, handleSubmit,setFocus, watch, formState: { errors } } = useForm<FormInputType>();
   const [showPassword, setShowPassword] = useState(false);
   const onSubmit: SubmitHandler<FormInputType> = data => {
     console.log(data);
-    dispatch(authThunks.login(data))
+    login(data)
       .unwrap()
       .then((res)=>{
         // console.log(res);

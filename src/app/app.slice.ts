@@ -18,8 +18,7 @@ export const slice = createSlice({
     setIsLoading: (state, action: PayloadAction<{ isLoading: boolean }>) => {
       //увидеть состояние state текущее
       // console.log(current(state));
-      // Логику в подредьюсерах пишем мутабельным образом,
-      // т.к. иммутабельность достигается благодаря immer.js
+      // Логику в подредьюсерах пишем мутабельным образом,т.к. иммутабельность достигается благодаря immer.js
       state.isLoading = action.payload.isLoading;
       // console.log(current(state));
     },

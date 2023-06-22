@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../common/hooks/hooks";
 import { authThunks } from "../auth.slice";
 import s from "./register.module.css";
 import FormControl from "@mui/material/FormControl";
@@ -13,6 +12,7 @@ import Button from "@mui/material/Button";
 import { NavLink, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useActions } from "../../../common/hooks/useActions";
 
 type FormInputType = {
   email: string
@@ -20,16 +20,9 @@ type FormInputType = {
   confirmPassword: string
 }
 export const Register = () => {
-  const dispatch = useAppDispatch();
+  const {registration}=useActions(authThunks)
   const navigate = useNavigate();
-  const registerHandler = () => {
-    const payload = {
-      email: "kozlov0020@gmail.com",
-      password: "1qazxcvBG"
-    };
-    dispatch(authThunks.register(payload));
-  };
-  const error = useAppSelector(state => state.app.error);
+
   const { register, handleSubmit, watch, formState: { errors, isSubmitting, isValid } } = useForm<FormInputType>({
     mode: "onChange",
     defaultValues: {
@@ -40,17 +33,15 @@ export const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   // const [isRegistered, setIsRegistered] = useState(false);
   const onSubmit: SubmitHandler<FormInputType> = data => {
-    console.log(data);
-    dispatch(authThunks.register(data))
+    // console.log(data);
+    registration(data)
       .unwrap()
       .then(() => {
         navigate("/login");
         toast.success("Successful registration")
       })
   };
-  const handleLogin = () => {
-    navigate("/login");
-  };
+
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
   };

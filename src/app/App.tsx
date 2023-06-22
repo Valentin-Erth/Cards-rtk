@@ -10,12 +10,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { Loader } from "../features/loader/loader";
 import { Header } from "../Header/Header";
 import { createPortal } from "react-dom";
+import { isLoading_Selector } from "./appSelector";
+import { isInitialized_auth_Selector } from "../features/auth/authSelectors";
 
 
 export const App = () => {
-  console.log('app');
-    const isLoading = useAppSelector((state) => state.app.isLoading);
-    const isInitialized = useAppSelector(state => state.auth.isInitialized);
+  console.log('app render');
+    const isLoading = useAppSelector(isLoading_Selector);
+    const isInitialized = useAppSelector(isInitialized_auth_Selector);
     const dispatch = useAppDispatch();
     // const navigate = useNavigate();
     useEffect(() => {

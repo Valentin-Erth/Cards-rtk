@@ -7,9 +7,9 @@ import { thunkTryCatch } from "../../common/utils/thunk-try-catch";
 export const getPacks=createAppAsyncThunk<{ packs:PacksResType },GetPacksArg >("packs/getPacks",
   async (arg, thunkAPI)=>{
   return thunkTryCatch(thunkAPI,async ()=>{
-    const res=await packsApi.getPacks(arg)
+   await packsApi.getPacks(arg)
     // console.log(res.data);
-    return {packs: res.data}
+    // return {packs: res.data}
   })
   }
 )
@@ -18,9 +18,9 @@ export const addPack = createAppAsyncThunk<{ pack: CardPackType }, AddPackArg>(
    (arg, thunkAPI) => {
     const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
-      const res=await packsApi.addPack(arg);
-      return { pack: res.data.newCardsPack}
-      // dispatch(getPacks({}));
+      await packsApi.addPack(arg);
+      // return { pack: res.data.newCardsPack}
+      dispatch(getPacks({}));
 
     });
   }
@@ -30,10 +30,10 @@ export const removePack = createAppAsyncThunk<{ packId: string }, string>(
   async (id, thunkAPI) => {
     const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
-     const res= await packsApi.deletePack(id);
-      // dispatch(getPacks({}));
+      await packsApi.deletePack(id);
+      dispatch(getPacks({}));
       // // TODO fetch packs with prev queryParams after delete  action
-      return {packId: res.data.deletedCardsPack._id}
+      // return {packId: res.data.deletedCardsPack._id}
     });
   }
 );
@@ -43,9 +43,9 @@ export const updatePack = createAppAsyncThunk<{ pack: CardPackType }, UpdatePack
     const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
       dispatch(packActions.savePackName(arg.name));
-      const res=await packsApi.updatePack(arg);
-      // dispatch(getPacks({}));
-      return {pack: res.data.updatedCardsPack}
+      await packsApi.updatePack(arg);
+      dispatch(getPacks({}));
+      // return {pack: res.data.updatedCardsPack}
     });
   }
 );
@@ -78,28 +78,30 @@ builder
     state.page = action.payload.packs.page;
     state.pageCount = action.payload.packs.pageCount;
   })
-  .addCase(addPack.fulfilled,(state, action)=>{
-    state.cardPacks.unshift(action.payload.pack)
-  })
-  .addCase(removePack.fulfilled,(state, action)=>{
-    // const newPacks=state.cardPacks.filter((packs)=>{
-    //   return packs._id!==action.payload.packId
-    //   })
-    // state.cardPacks=newPacks
-    const index = state.cardPacks.findIndex((pack) => pack._id === action.payload.packId);
-    if (index !== -1) {
-      state.cardPacks.splice(index, 1);
-    };
-  })
-  .addCase(updatePack.fulfilled, (state, action)=>{
-    const index = state.cardPacks.findIndex((pack) => pack._id === action.payload.pack._id);
-    if (index !== -1) {
-      state.cardPacks[index]=action.payload.pack
-    };
-  })
+
   }
 })
 export const packReducer=slice.reducer
 export const packActions=slice.actions
 export const packsThunks = {getPacks,addPack,removePack,updatePack}
 
+//immerJS trainy CRUD
+//   .addCase(addPack.fulfilled,(state, action)=>{
+//     state.cardPacks.unshift(action.payload.pack)
+//   })
+//   .addCase(removePack.fulfilled,(state, action)=>{
+//     // const newPacks=state.cardPacks.filter((packs)=>{
+//     //   return packs._id!==action.payload.packId
+//     //   })
+//     // state.cardPacks=newPacks
+//     const index = state.cardPacks.findIndex((pack) => pack._id === action.payload.packId);
+//     if (index !== -1) {
+//       state.cardPacks.splice(index, 1);
+//     };
+//   })
+//   .addCase(updatePack.fulfilled, (state, action)=>{
+//     const index = state.cardPacks.findIndex((pack) => pack._id === action.payload.pack._id);
+//     if (index !== -1) {
+//       state.cardPacks[index]=action.payload.pack
+//     };
+//   })

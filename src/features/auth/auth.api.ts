@@ -79,6 +79,7 @@ export type ProfileType = {
   rememberMe: boolean;
   isAdmin: boolean;
   name: string|undefined;
+  avatar?: string;
   verified: boolean;
   publicCardPacksCount: number;// количество колод
   created: string;
