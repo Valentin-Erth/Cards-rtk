@@ -12,6 +12,12 @@ import { createAppAsyncThunk, globalRouter } from "../../common/utils/createAppA
 import { thunkTryCatch } from "../../common/utils/thunk-try-catch";
 import { appActions } from "../../app/app.slice";
 
+//аналог enam,поля только для чтения
+const ResultCode= {
+  Success: 0,
+  Error: 1,
+  Captcha: 10
+} as const;
 const registration = createAppAsyncThunk<any, ArgRegisterType>("auth/register", (arg, thunkAPI) => {
   return thunkTryCatch(thunkAPI, async () => {// если не сработает запрос попадем в катч ошибки
     const res = await authApi.register(arg);
