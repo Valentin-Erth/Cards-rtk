@@ -31,6 +31,7 @@ import { useActions } from "../../common/hooks/useActions";
 import { BaseModal } from "../../common/components/basicModal";
 import { AddPackModal } from "./modals/AddPackModal";
 import { DeletePackModal } from "./modals/DeletePackModal";
+import { EditPackModal } from "./modals/EditPackModal";
 
 
 export type QueryParamsType = {
@@ -238,12 +239,23 @@ export const Packs = () => {
                       </span>
                       {userId === p.user_id && (
                         <span style={{ width: "67%" }}>
-                        <IconButton aria-label="edit"
-                                    onClick={() => updatePack({ _id: p._id, name: "updatedPack13" })}
-                          //TODO modal
-                        >
-                          <EditIcon />
-                        </IconButton>
+                          <BaseModal modalTitle={"Edit pack"} buttonType={"iconEdit"}>
+                            {(close) => (
+                              <EditPackModal
+                                closeModal={close}
+                                _id={p._id}
+                                packName={p.name}
+                                cover={p.deckCover}
+                                queryParams={queryParams}
+                              />
+                            )}
+                          </BaseModal>
+                        {/*<IconButton aria-label="edit"*/}
+                        {/*            onClick={() => updatePack({ _id: p._id, name: "updatedPack13" })}*/}
+                        {/*  //TODO modal*/}
+                        {/*>*/}
+                        {/*  <EditIcon />*/}
+                        {/*</IconButton>*/}
                           <BaseModal modalTitle={"Delete pack"} buttonType={"iconDelete"}>
                             {(close) => (
                               <DeletePackModal
