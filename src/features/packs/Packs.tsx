@@ -28,6 +28,9 @@ import { PacksSlider } from "./PackSlider/PackSlider";
 import { maxCardsCount_Selector, minCardsCount_Selector, packs_Selector, packsCount_Selector } from "./packsSelector";
 import { isAuth_auth_Selector, userId_auth_Selector } from "../auth/authSelectors";
 import { useActions } from "../../common/hooks/useActions";
+import { BaseModal } from "../../common/components/basicModal";
+import { AddPackModal } from "./modals/AddPackModal";
+import { DeletePackModal } from "./modals/DeletePackModal";
 
 
 export type QueryParamsType = {
@@ -41,7 +44,7 @@ export type QueryParamsType = {
 };
 export const Packs = () => {
   console.log("Packs");
-  const { getPacks,addPack,updatePack,removePack} = useActions(packsThunks);
+  const { getPacks, updatePack, removePack } = useActions(packsThunks);
   const isAuth = useAppSelector(isAuth_auth_Selector);
   const packs = useAppSelector(packs_Selector);
   const packsCount = useAppSelector(packsCount_Selector);
@@ -73,13 +76,13 @@ export const Packs = () => {
       setQueryParams((prevState) => ({
         ...prevState,
         sortPacks: "0updated",
-        page: 0,
+        page: 0
       }));
     } else {
       setQueryParams((prevState) => ({
         ...prevState,
         sortPacks: "1updated",
-        page: 0,
+        page: 0
       }));
     }
   };
@@ -132,10 +135,15 @@ export const Packs = () => {
       <div className={s.packsContainer}>
         <div className={s.titleBlock}>
           <span className={s.title}>Packs List</span>
-          <Button variant={"contained"} color={"primary"}
-                  style={{ borderRadius: "30px", width: "175px" }} onClick={()=>{addPack({name:"NewPack"})}}>
-            Add new pack
-          </Button>
+          <BaseModal modalTitle={"Add new pack"} buttonType={"base"} >
+            {(close) => <AddPackModal closeModal={close}/>}
+          </BaseModal>
+          {/*<Button variant={"contained"} color={"primary"}*/}
+          {/*        style={{ borderRadius: "30px", width: "175px" }} onClick={() => {*/}
+          {/*  addPack({ name: "NewPack" });*/}
+          {/*}}>*/}
+          {/*  Add new pack*/}
+          {/*</Button>*/}
         </div>
         <div className={s.actionsBlock}>
           <div className={s.search}>
@@ -214,7 +222,8 @@ export const Packs = () => {
                   <TableRow key={p._id}
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell component="th" scope="row" sx={{ padding: "16px 16px 16px 36px" }}>
-                      <Link to={`/cards/pack/${p._id}`} style={{ textDecoration: "none", color: "inherit" }}>{p.name}</Link>
+                      <Link to={`/cards/pack/${p._id}`}
+                            style={{ textDecoration: "none", color: "inherit" }}>{p.name}</Link>
                     </TableCell>
                     <TableCell align="left">{p.cardsCount}</TableCell>
                     <TableCell align="left">{changeDateFormat(p.updated)}</TableCell>
@@ -227,19 +236,29 @@ export const Packs = () => {
                           </IconButton>
                         )}
                       </span>
-                      {userId===p.user_id && (
+                      {userId === p.user_id && (
                         <span style={{ width: "67%" }}>
                         <IconButton aria-label="edit"
-                          onClick={() => updatePack({_id: p._id, name:"updatedPack13" })}
+                                    onClick={() => updatePack({ _id: p._id, name: "updatedPack13" })}
                           //TODO modal
                         >
                           <EditIcon />
                         </IconButton>
-                        <IconButton aria-label="delete"
-                        onClick={() => removePack(p._id)}
-                        >
-                        <DeleteOutlineIcon />
-                        </IconButton>
+                          <BaseModal modalTitle={"Delete pack"} buttonType={"iconDelete"}>
+                            {(close) => (
+                              <DeletePackModal
+                                closeModal={close}
+                                _id={p._id}
+                                packName={p.name}
+                                queryParams={queryParams}
+                              />
+                            )}
+                          </BaseModal>
+                        {/*<IconButton aria-label="delete"*/}
+                        {/*            onClick={() => removePack(p._id)}*/}
+                        {/*>*/}
+                        {/*<DeleteOutlineIcon />*/}
+                        {/*</IconButton>*/}
                           </span>
                       )}
 

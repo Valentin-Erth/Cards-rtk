@@ -8,7 +8,6 @@ export const getPacks=createAppAsyncThunk<{ packs:PacksResType },GetPacksArg >("
   async (arg, thunkAPI)=>{
   return thunkTryCatch(thunkAPI,async ()=>{
    const res=await packsApi.getPacks(arg)
-    // console.log(res.data);
     return {packs: res.data}
   })
   }
@@ -25,26 +24,26 @@ export const addPack = createAppAsyncThunk<{ pack: CardPackType }, AddPackArg>(
     });
   }
 );
-export const removePack = createAppAsyncThunk<{ packId: string }, string>(
+export const removePack = createAppAsyncThunk<{ packId: string }, {_id: string }>(
   "packs/deletePack",
-  async (id, thunkAPI) => {
+  async (arg, thunkAPI) => {
     const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
-      await packsApi.deletePack(id);
-      dispatch(getPacks({}));
+      await packsApi.deletePack(arg._id);
+      // dispatch(getPacks({}));
       // // TODO fetch packs with prev queryParams after delete  action
       // return {packId: res.data.deletedCardsPack._id}
     });
   }
 );
-export const updatePack = createAppAsyncThunk<{ pack: CardPackType }, UpdatePackArg>(
+export const updatePack = createAppAsyncThunk<{ pack: CardPackType }, UpdatePackArg & {userId?:string}>(
   "packs/updatePack",
   async (arg, thunkAPI) => {
     const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
       dispatch(packActions.savePackName(arg.name));
       await packsApi.updatePack(arg);
-      dispatch(getPacks({}));
+      dispatch(getPacks({user_id:arg.userId}));
       // return {pack: res.data.updatedCardsPack}
     });
   }

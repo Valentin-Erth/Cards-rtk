@@ -1,0 +1,12 @@
+.coverBlock {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 360px;
+}
+/*img {*/
+/*    height: 130px;*/
+/*    padding: 10px;*/
+/*}*/
